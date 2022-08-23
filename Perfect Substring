@@ -1,0 +1,71 @@
+import java.util.*;
+public class Main
+{
+    public static boolean have_same_freq(int[] freq, int k)
+    {
+        System.out.println("freq");
+        for(int e:freq)
+            System.out.print(e);
+        for (int i = 0; i < 10; i++) {
+        
+            if (freq[i] != 0 && freq[i] != k) {
+                return false;
+            }
+        }
+        return true;
+    }
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = "102012";
+		int k = 2;
+		int ans = count_perfect_substrings(s,k);
+		System.out.println(ans);
+	}
+	
+	public static int count_perfect_substrings(String s, int k)
+	{
+	    int distinct =0;
+	    int ans=0;
+	    HashMap<Character,Integer> exists = new HashMap<>();
+	    int freq[] = new int[10];
+	    
+	    for(int i=0;i<s.length();i++)
+	    {
+	        if(!exists.containsKey(s.charAt(i)))
+	        {
+	            distinct+=1;
+	            exists.put(s.charAt(i),1);
+	        }
+	    }
+	    System.out.println("distinct "+distinct);
+	    for(int len=1;len<=distinct;len++)
+	    {
+	        for(int i=0;i<10;i++)
+	            freq[i] =0;
+	        int window_start = 0;
+	        int window_size= len*k;
+	        int window_end = window_start+window_size-1;
+	        for(int i=window_start;i<=Math.min(window_end,s.length()-1);i++)
+	        {
+	               freq[s.charAt(i)-'0']+=1;
+	        }
+	        while(window_end<s.length())
+	        {
+	            System.out.println("ws "+window_start);
+	            System.out.println("we "+window_end);
+	            if(have_same_freq(freq,k))
+	                ans+=1;
+	            freq[s.charAt(window_start)-'0']-=1;
+	            window_start+=1;
+	            window_end+=1;
+	            if(window_end<s.length())
+	            {
+	                freq[s.charAt(window_end)-'0']+=1;
+	            }
+	            System.out.println("ans "+ans);
+	        }
+	        
+	    }
+	  	return ans;
+	}
+}
