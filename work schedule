@@ -1,0 +1,85 @@
+You just got a new job where you have to work exactly as many hours as you are told each week, working no more than a daily maximum number of hours per day. Some of the days, they tell you how many hours you will work. You get to choose the remainder of your schedule, within the limits.
+
+A completed schedule consists of exactly 7 digits in the range 0 to 8 representing each day's hours to be worked. You will get a pattern string similar to the schedule, but with some of the digits replaced by a question mark, ?, (ascii 63 decimal). Given a maximum number of hours you can work in a day, replace the question marks with digits so that the sum of the scheduled hours is exactly the hours you must work in a week. Return a string array with all possible schedules you can create, ordered lexicographically.
+
+For example, your partial schedule, pattern = 08??840, your required hours, work_hours = 24, and you can only work, at most, day_hours = 4 hours per day during the two days in question. You have two days on which you must work 24 - 20 = 4 more hours for the week. All of your possible schedules are listed below:
+
+0804840
+0813840
+0822840
+0831840
+0840840
+.......
+
+
+.
+.
+.
+.
+.
+.
+..
+.
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+import java.util.*;
+public class Main
+{
+    static List<String> timetable = new ArrayList<>();
+    
+    public static List<String> createTable(String list[], int idx,int rem_hrs,int day_hrs)
+    {
+        if(idx == list.length)
+        {
+            if(rem_hrs == 0)
+                timetable.add(String.join("",list));
+            return timetable;
+        }
+        if(list[idx].equals(String.valueOf("?")))
+        {
+            for(int i=0;i<=day_hrs;i++)
+            {
+                String buffer = list[idx];
+                if(i<=rem_hrs)
+                {
+                    list[idx]=String.valueOf(i);
+                    createTable(list,idx+1,rem_hrs-i,day_hrs);
+                }
+                list[idx] = buffer;
+                
+            }
+        }
+        else
+            createTable(list,idx+1,rem_hrs,day_hrs);
+        
+        return timetable;
+    }
+    
+    public static List<String> construct(int work_hrs,int day_hrs,String pattern)
+    {
+        String list[] = pattern.split("");
+        int rem_hrs =0;
+        int hrs=0;
+        for(String s:list)
+        {
+            if(!String.valueOf("?").equals(s))
+                hrs+=Integer.valueOf(s);
+        }
+        rem_hrs = work_hrs - hrs;
+        createTable(list,0,rem_hrs,day_hrs);
+        return timetable;
+    }
+	public static void main(String[] args) {
+		int work_hrs =3;
+		int day_hrs = 2;
+		String pattern = "??2??00";
+		List<String> ans= construct(work_hrs,day_hrs,pattern);
+		for(int i=0;i<ans.size();i++)
+		    System.out.println(ans.get(i));
+	}
+}
