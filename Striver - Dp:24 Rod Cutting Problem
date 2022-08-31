@@ -1,0 +1,48 @@
+import java.util.*;
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		// Write your code here.
+        int dp[][] = new int[n][n+1];
+        for(int i=0;i<=n;i++)
+        {
+            dp[0][i] = i*price[0];
+        }
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<=n;j++)
+            {
+                int notTake = 0 + dp[i-1][j];
+                int take = 0;
+                if(i+1<=j)
+                {
+                    take = price[i] + dp[i][j-(i+1)];      
+                 }
+                 dp[i][j]=Math.max(take,notTake);
+            }
+        }
+        return dp[n-1][n];
+        /*for(int i=0;i<n;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+       return maxCost(n-1,n,price,dp);*/
+	}
+    
+    public static int maxCost(int idx,int w,int price[],int[][] 
+                             dp)
+    {
+        if(idx == 0)
+        {
+            return w*(price[idx]);
+        }
+        if(dp[idx][w]!=-1)
+            return dp[idx][w];
+        int notTake = 0 + maxCost(idx-1,w,price,dp);
+        int take = 0;
+        if(idx+1<=w)
+        {
+            take = price[idx] + maxCost(idx,w-(idx+1),price,dp);
+        }
+        return dp[idx][w]=Math.max(take,notTake);
+    }
+}
