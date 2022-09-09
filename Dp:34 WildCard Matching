@@ -1,0 +1,21 @@
+public static boolean match(String pattern,String text,int i,int j)
+    {
+        //base cases
+        if(i<0 && j<0)
+            return true;
+        if(i<0 && j>=0)
+            return false;
+        if(i>=0 && j<0)
+        {
+            for(int k=0;k<=i;k++)
+                if(pattern.charAt(k)!='*')
+                    return false;
+            return true;
+        }
+        if(pattern.charAt(i) == text.charAt(j) || pattern.charAt(i)=='?')
+            return match(pattern,text,i-1,j-1);
+        if(pattern.charAt(i) == '*')
+            return match(pattern,text,i-1,j) || match(pattern,text,i,j-1);
+        return false;
+        
+    }
