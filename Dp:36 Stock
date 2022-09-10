@@ -1,0 +1,30 @@
+public class Solution {
+    public static long getMaximumProfit (int n, long[] values) {
+        // Your code goes here.
+        // keep a variable to indicate at every index
+        // whether you can buy -->true/false
+        // initially at first index u are liberal to buy(true)
+        return profit(0,n-1,true,values);
+    }
+    
+    public static long profit(int i,int n,boolean buy,long[] values)
+    {
+        // base cases
+        if(i>n)
+            return 0;
+        if(buy)
+        {
+            // 2 cases --> you wish to buy , not buy
+            long buying = -values[i]+ profit(i+1,n,false,values);
+            long notbuy =  0 + profit(i+1,n,true,values);
+            return Math.max(buying,notbuy);                
+        }
+        else
+        {
+            // 2 cases --> sell or not sell
+            long sell = values[i] + profit(i+1,n,true,values);
+            long notsell = 0 + profit(i+1,n,false,values);
+            return Math.max(sell,notsell);
+        }
+    }
+}
