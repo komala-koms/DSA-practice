@@ -1,0 +1,30 @@
+ 
+
+public class Solution {
+
+    public static int profit(int idx,int buy,int n,int[] prices)
+    {
+        // base cases
+        if(idx >n)
+            return 0;
+        if(buy==1)
+        {
+            int buying = -prices[idx]+profit(idx+1,0,n,prices);
+            int notbuy = 0+ profit(idx+1,1,n,prices);
+            return Math.max(buying,notbuy);
+        }
+        else
+        {
+            //if you sell u have to purchase after i+2 th day
+            int sell = prices[idx]+profit(idx+2,1,n,prices);
+            int notsell = 0+profit(idx+1,0,n,prices);
+            return Math.max(sell,notsell);
+        }
+    }
+	public static int stockProfit(int[] prices) {
+		// Write your code here.
+        int n = prices.length;
+        return profit(0,1,n-1,prices);
+	}
+    
+}
