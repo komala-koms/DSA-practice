@@ -1,0 +1,22 @@
+
+public class Solution 
+{   
+    public static int func(int i,int j,int[] arr)
+    {
+        if(i==j)
+            return 0;
+        int mini = Integer.MAX_VALUE;
+        for(int k=i;k<=j-1;k++)
+        {
+            int steps = (arr[i-1]*arr[k]*arr[j])+
+                         func(i,k,arr)+func(k+1,j,arr);
+            mini = Math.min(mini,steps);
+        }
+        return mini;
+    }
+    
+	public static int matrixMultiplication(int[] arr , int N) {
+		// Write your code here
+        return func(1,N-1,arr);
+	}
+}
